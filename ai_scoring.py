@@ -1656,17 +1656,9 @@ def evaluate_student_text_s12(student_text, keyword_dict_s12 ,
     }
 
 # ---------------- S13 การใช้ประโยค ----------------
-subject_keywords_s13 = ["สื่อสังคม", "สื่อออนไลน์", "สื่อสังคมออนไลน์", "สื่อ", "การ",
-                    "ที่", "และ", "เห็นด้วย", "ไม่เห็นด้วย", "ต่าง ๆ", "ไม่",
-                    "ทุกวัย", "ทุกเพศ", "เป็นต้น"]
-
-object_keywords_s13 = ["ข้อมูลข่าวสาร", "ข้อมูล", "ข่าวสาร",
-                   "สื่อสังคม", "สื่อออนไลน์", "สื่อสังคมออนไลน์",
-                   "เห็นด้วย", "ไม่เห็นด้วย", "มีกันหมด", "ทุกเพศทุกวัย"]
-
 def evaluate_reasoning_usage(student_text,
-                             subject_keywords_s13=None,
-                             object_keywords_s13=None,
+                             subject_keywords=None,
+                             object_keywords=None,
                              full_score=2.0,
                              deduct_per_word=0.5):
     """
@@ -1674,10 +1666,19 @@ def evaluate_reasoning_usage(student_text,
     Q1: ตรวจ SVO
     Q2: ตรวจว่ามีประโยคที่ไม่สื่อความหมาย
     """
+    # กำหนดค่า default ถ้าไม่ได้ส่งเข้ามา
     if subject_keywords is None:
-        subject_keywords = subject_keywords_s13
+        subject_keywords = [
+            "สื่อสังคม", "สื่อออนไลน์", "สื่อสังคมออนไลน์", "สื่อ", "การ",
+            "ที่", "และ", "เห็นด้วย", "ไม่เห็นด้วย", "ต่าง ๆ", "ไม่",
+            "ทุกวัย", "ทุกเพศ", "เป็นต้น"
+        ]
     if object_keywords is None:
-        object_keywords = object_keywords_s13
+        object_keywords = [
+            "ข้อมูลข่าวสาร", "ข้อมูล", "ข่าวสาร",
+            "สื่อสังคม", "สื่อออนไลน์", "สื่อสังคมออนไลน์",
+            "เห็นด้วย", "ไม่เห็นด้วย", "มีกันหมด", "ทุกเพศทุกวัย"
+        ]
 
     # ---------------- Q1 ----------------
     sentences = sent_tokenize(student_text)
@@ -1706,6 +1707,7 @@ def evaluate_reasoning_usage(student_text,
         "q2_result": ans2,
         "score": round(score, 2)
     }
+
 
 
 # ✅ -----------------------------
