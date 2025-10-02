@@ -757,9 +757,15 @@ def normalize_word(w):
     return w.replace("\n", "").replace("\r", "").replace(" ", "").lower()
 
 # โหลด dataset
-spoken_words_dataset = pd.read_csv("D:\new_project\speak_words(in) (1).csv")["word"].dropna().tolist()
-notinlan_dataset = pd.read_csv("D:\new_project\notinlan_words.csv")["notinlan"].dropna().tolist()
-local_words_context = pd.read_csv("D:\new_project\sample_local_dialect  (1)(in).csv")["local_word"].dropna().tolist()
+file_path = r"D:\new_project\speak_word(in) (1).csv"
+spoken_words_dataset = pd.read_csv(file_path)["word"].dropna().astype(str).str.strip()
+spoken_words_dataset = [w for w in spoken_words_dataset if w]  # ลบ empty string
+
+notinlan_dataset = pd.read_csv(r"D:\new_project\notinlan_words.csv")["notinlan"].dropna().astype(str).str.strip()
+notinlan_dataset = [w for w in notinlan_dataset if w]
+
+local_words_context = pd.read_csv(r"D:\new_project\sample_local_dialect  (1)(in).csv")["local_word"].dropna().astype(str).str.strip()
+local_words_context = [w for w in local_words_context if w]
 
 spoken_words_set = set(normalize_word(w) for w in spoken_words_dataset)
 notinlan_set = set(normalize_word(w) for w in notinlan_dataset)
@@ -1024,7 +1030,7 @@ def load_local_words_s8(file_path):
         raise ValueError("ไม่พบคอลัมน์ 'local_word' ในไฟล์")
     return [str(x).strip() for x in df["local_word"].dropna().tolist()]
 
-local_words_s8 = load_local_words_s8("D:\new_project\example_dialect (3)(in) (1).csv")
+local_words_s8 = load_local_words_s8(r"D:\new_project\example_dialect (3)(in) (1).csv")
 
 def normalize_text(words):
     text = str(words).lower()
@@ -1343,7 +1349,7 @@ def evaluate_comment_validity(text):
     }
 
 #------------------S11 การสะกดคำ (ข้อ 2) --------------------
-with open('D:\new_project\thai_loanwords_new_update(1).json', 'r', encoding='utf-8') as f:
+with open(r'D:\new_project\thai_loanwords_new_update(1).json', 'r', encoding='utf-8') as f:
      loanwords_data = json.load(f)
      loanwords_whitelist = set(item['thai_word'] for item in loanwords_data)
 
@@ -1357,7 +1363,7 @@ data = json.loads(raw_data)
 COMMON_MISSPELLINGS = {item['wrong']: item.get('right') for item in data}
 
 
-with open("D:\new_project\splitable_phrases.json", "r", encoding="utf-8") as f:
+with open(r"D:\new_project\splitable_phrases.json", "r", encoding="utf-8") as f:
     splitable_phrases = set(json.load(f))
 
 API_KEY = '33586c7cf5bfa0029887a9981bf94963'
@@ -1534,9 +1540,14 @@ def evaluate_text(text):
 #------------------S12 การใช้คำ/ถ้อยคำสำนวน (ข้อ 2) --------------------
 
 # Dataset สำหรับ S12 (ข้อ 2)
-spoken_words_dataset_s12 = pd.read_csv("D:\new_project\dataset_speak_word(in).csv")["word"].dropna().tolist()
-notinlan_dataset_s12 = pd.read_csv("D:\new_project\dataset_notinlan_words(in).csv")["notinlan"].dropna().tolist()
-local_words_context_s12 = pd.read_csv("D:\new_project\S12_sample_local_dialect  (1)(in)(in).csv")["local_word"].dropna().tolist()
+spoken_words_dataset_s12 = pd.read_csv(r"D:\new_project\dataset_speak_word(in).csv")["word"].dropna().astype(str).str.strip()
+spoken_words_dataset_s12 = [w for w in spoken_words_dataset_s12 if w]  # ลบ empty string
+
+notinlan_dataset_s12 = pd.read_csv(r"D:\new_project\dataset_notinlan_words(in).csv")["notinlan"].dropna().astype(str).str.strip()
+notinlan_dataset_s12 = [w for w in notinlan_dataset_s12 if w]
+
+local_words_context_s12 = pd.read_csv(r"D:\new_project\S12_sample_local_dialect  (1)(in)(in).csv")["local_word"].dropna().astype(str).str.strip()
+local_words_context_s12 = [w for w in local_words_context_s12 if w]
 
 spoken_words_set_s12 = set(normalize_word(w) for w in spoken_words_dataset_s12)
 notinlan_set_s12 = set(normalize_word(w) for w in notinlan_dataset_s12)
